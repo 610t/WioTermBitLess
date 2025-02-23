@@ -924,6 +924,29 @@ void loop() {
       pCharacteristic[4]->setValue(action, 20);
       pCharacteristic[4]->notify();
 
+      // Send 5way button state
+      memset((char *)(action), 0, 20);  // clear action buffer
+      action[19] = DATA_TEXT;
+      action[0] = '5';
+      action[1] = 'w';
+      action[2] = 'a';
+      action[3] = 'y';
+      action[4] = 0;
+      if (digitalRead(WIO_5S_UP) == LOW) {
+        action[8] = 'u';
+      } else if (digitalRead(WIO_5S_DOWN) == LOW) {
+        action[8] = 'd';
+      } else if (digitalRead(WIO_5S_LEFT) == LOW) {
+        action[8] = 'l';
+      } else if (digitalRead(WIO_5S_RIGHT) == LOW) {
+        action[8] = 'r';
+      } else if (digitalRead(WIO_5S_PRESS) == LOW) {
+        action[8] = 'b';
+      }
+      action[9] = 0;
+      pCharacteristic[4]->setValue(action, 20);
+      pCharacteristic[4]->notify();
+
       old_label_time = label_time;
     }
   }
